@@ -2,7 +2,9 @@
 -*- coding: utf-8 -*-
 
 
-"""Antoine Laldjee-Deroubaix, HX1
+#Antoine Laldjee-Deroubaix, HX1
+#Exercice 1
+"""
 1.
 // division euclidienne
 %  opérateur modulo
