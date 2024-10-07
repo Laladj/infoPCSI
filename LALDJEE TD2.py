@@ -1,4 +1,10 @@
 #!/usr/bin/python3
+#Antoine Laldjee-Deroubaix, HX1, TD2 : Parcours de liste
+
+import random as rd
+import time
+import statistics as st
+from matplotlib import pyplot as plt
 
 #%%=============EXERCICE 1==========
 
@@ -17,10 +23,6 @@ L = [x-0.1 for x in range(-21,22)]
 positivons(L)
 print(L)
 #%%============EXERCICE 2=============
-import random as rd
-import time
-import statistics as st
-from matplotlib import pyplot as plt
 #1. Reprise du script exo 12 TD1
 def listeidentique(L:list) -> bool:
     """renvoie True si la liste est identique"""
@@ -32,7 +34,8 @@ def listeidentique(L:list) -> bool:
 listeidentique([1,1,1,1]) #True
 listeidentique([1,1,1,7]) #False
 def maximumListe(L:list):
-    """Renvoie le maximum d'une liste, déjà écrit précemment, mais nécéssaire pour le dernier script"""
+    """Renvoie le maximum d'une liste, déjà écrit précemment, mais nécéssaire
+      pour le dernier script"""
     plusGrand = 0
     for i, nombre in enumerate(L):
         if nombre >= plusGrand:
@@ -126,8 +129,57 @@ plt.plot()
 
 
 # %%
-#def plus_proches(L, dist)
+import random as rd
+def plus_proches(L:list, dist) -> tuple:
+    """Prend en argument une liste et un fonction,
+    et renvoie le couple d'elements DISTINCTS 
+    dont la valeur prise par la fonction est 
+    la plus faible."""
+    couple = (float('-inf'),float('inf')) 
+    for index, a in enumerate(L):
+        for b in L[index+1:]:
+            if dist(a,b) < dist(couple[0], couple[1]):
+                couple = (a,b)
+            else : pass
+    return couple
+def dist1(x,y) -> float:
+    """Renvoie la distance entre x et y, deux reels"""
+    return abs(x-y)
+
+#TEST
+L = [k-0.11*k**2 for k in range(31)]
+print(L)
+print(plus_proches(L,dist1)) #(2.24, 2.25)
+
+def taux_diff(ch1,ch2)-> float:
+    card, a = 0, 0
+    """prend en argument deux chaines de caractères, et renvoie 
+    le taux de caractères différents entre les deux listes"""
+    if len(ch1)< len(ch2):
+        l, L = ch1, ch2
+    else: l, L = ch2, ch1
+    while a <= len(l):
+        a += 1
+        if l[a] == L[a]:
+            pass
+        else : card += 1
+    return (card + (len(L)-len(l)))/len(l)
+
+Ch = ["myrte", "myrrhe", "myriapode", "tétrapode", "tropaire", "entrisme", "tropisme"]
+
+ADN = [[rd.choice(['A', 'T', 'C', 'G']) for _ in range(20)] for _ in range(1000)]
+#6
+plus_proches(ADN, taux_diff)
+
+#7
+
+def plus_proches_dist(L):
+    """Renvoie la distance la plus courte entre deux elements,
+     ainsi le couple des deux elements """
+    return 
     
+
+
 #%%===========EXERCICE 5============
 
 def isSymetrical(L:list) -> bool:
