@@ -1,10 +1,6 @@
 #!/usr/bin/python3
 #Antoine Laldjee-Deroubaix, HX1, TD2 : Parcours de liste
 
-import random as rd
-import time
-import statistics as st
-from matplotlib import pyplot as plt
 
 #%%=============EXERCICE 1==========
 
@@ -23,6 +19,11 @@ L = [x-0.1 for x in range(-21,22)]
 positivons(L)
 print(L)
 #%%============EXERCICE 2=============
+import random as rd
+import time
+import statistics as st
+from matplotlib import pyplot as plt
+
 #1. Reprise du script exo 12 TD1
 def listeidentique(L:list) -> bool:
     """renvoie True si la liste est identique"""
@@ -73,7 +74,7 @@ print(second_max2([1,1,1,1]))
 
 def tab_aleatoire(n=10000, N=1024) ->list:
     """Renvoie un tableau de n nombres compris entre 0 et N-1"""
-    L = []
+    L = [] 
     for i in range(n):
         L.append(rd.randrange(0,N))
     return L
@@ -122,13 +123,41 @@ temps_moy(1000)
 #(0.10627025454546542, 0.0013746272728150705)
 
 #IV
+n_values = [10**i for i in range(1, 8)]  # n = 10^1, 10^2, ..., 10^7
+temps_second_max1 = []
+temps_second_max2 = []
 
-plt.plot()   
+#On essaie de definir une liste contenant les abscisses
+#puis une autre contenant les ordonées
+# Mesurer les temps moyens
+
+for n in n_values:
+    moy1, moy2 = temps_moy(n)
+    temps_second_max1.append(moy1)
+    temps_second_max2.append(moy2)
+
+# Tracé des résultats
+plt.figure(figsize=(10, 6))
+plt.plot(n_values, temps_second_max1, label='second_max1', marker='o')
+plt.plot(n_values, temps_second_max2, label='second_max2', marker='o')
+
+# Configurer l'échelle logarithmique
+plt.xscale('log')
+plt.yscale('log')
+
+# Ajout de labels et d'un titre
+plt.xlabel('Nombre d\'éléments (n)')
+plt.ylabel('Temps moyen d\'exécution (s)')
+plt.title('Temps moyen d\'exécution pour second_max1 et second_max2')
+plt.legend()
+plt.grid()
+plt.show()
+
     
 
 
 
-# %%
+    # %%
 import random as rd
 def plus_proches(L:list, dist) -> tuple:
     """Prend en argument une liste et un fonction,
@@ -178,6 +207,55 @@ def plus_proches_dist(L):
      ainsi le couple des deux elements """
     return 
     
+#%%===========EXERCICE 4===============
+#i
+def enleve(L:list, element):
+    """prend en paramètre une liste et un élement, 
+    et renvoie la liste privée de la première occurence
+    de l'élément"""
+    if element not in L:
+        pass
+    else:
+        count = 0
+        liste = []
+        while L[count]!= element:
+            liste.append(L[count])
+            count += 1
+        for i in range(count+1, len(L)):
+            liste.append(i)
+        L[:]=liste
+
+L = [3,5, 6, 2, 8, 9, 4] 
+enleve(L,5) # la liste contient l'element
+print(L)
+
+enleve(L, "element non contenu")
+print(L)
+
+#ii
+def dernier(L:list)->list:
+    """enleve le dernier argument de la liste en paramètre"""
+    liste = []
+    for i in range(0,len(L)-1):
+        liste.append(L[i])
+    L[:]= liste
+
+L = [3,5, 6, 2, 8, 9, 4] 
+dernier(L)
+print(L)
+
+#iii
+def miroir(L:list) -> list:
+    """Change la liste donnée en argument par son miroir"""
+    liste = []
+    for i in range(1, len(L)+1):
+        liste.append(L[-i])
+    L[:]= liste
+L = [3,5, 6, 2, 8, 9, 4] 
+miroir(L)
+print(L)
+
+
 
 
 #%%===========EXERCICE 5============
@@ -194,5 +272,54 @@ print(isSymetrical([2,5,7,8,7,5,2]))#Nombre impair d'éléments
 print(isSymetrical([2,5,7,8,4,5,2])) #False, nombre impair d'éléments
 
 
+#%% Exercice 6
+#Je copie des fonction précédentes, car il n'est pas possible d'appeler ces 
+#fonctions dans la cellule
+#1===========================
+def listeidentique(L:list) -> bool:
+    """renvoie True si la liste est identique"""
+    for i in range(len(L)):
+        if L[i] != L[0]:
+            return False
+        else: pass
+    return True
+
+def max_et_min1(L:list):
+    """Renvoie Le max et min d'une liste sous forme de tuple"""
+    if listeidentique(L):
+        return L[0], L[1]
+    else: 
+        plusGrand = float('-inf')
+        plusPetit = float('inf')
+
+        for i, nombre in enumerate(L):
+            if nombre >= plusGrand:
+                plusGrand= nombre
+            if nombre <= plusPetit:
+                plusPetit = nombre
+    return plusPetit, plusGrand
+    
+max_et_min1([3,7,2,5,8,2,7, -12, 18])
+#def max_et_min1(L:list)->tuple:
+
+#===============2
+
+def max_et_min2(L:list)->tuple:
+    """Compare les elements de la liste deux a deux,
+    et renvoie le couple min/max de la liste"""
+    
+    listeMin , listeMax =  [], []
+    # while len(listeMin)>1 or len(listeMin) == 0 and len(listeMax)>1 or len(listeMax) == 0 : 
+    for i in range(0, len(L)-1, 2):
+        if L[i]> L[i+1]:
+            listeMax.append(L[i])
+            listeMin.append(L[i+1])
+        else :
+            listeMin.append(L[i])
+            listeMax.append(L[i+1])
+    min, max = float(listeMin), float(listeMax)
+    return min, max
+max_et_min2([3,7,2,5,8,2,7, -12 ])
 
 
+#%%
