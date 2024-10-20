@@ -82,20 +82,55 @@ troncation_a_la_plus_courte(L1,L2) #([1, 2, 3, 4, 5, 6, 7, 8, 9], [10, 11, 12, 1
 #============Question 3==========
 
 #i
-def suite_liste(L1,L2, n):
-    """Renvoie la liste n premiers termes de la suite récurrente (de 0 à n-1)
-    linéaire, prenant en L1 les coefs des termes, et L2 la suite associée.
+def suite_liste(L1,L2,n)->list:
+    """ Prend en argument deux listes de reels, et Renvoie 
+la liste constituée des n premiers termes de la suite récurrente
+linéaire d'ordre P= len(L1)
+C'est à dire les termes du 0ème au n-1ème
     
-    Les listes sont tronquées si elle n'ont pas la même taille, """
-    L = []
+    La première liste comporte les coefficient (a1, a2....an)
+    la seconde liste comporte la liste de reels (u0...un-1)
+
+    Exemple : L1 contient les coefficients : A0 A1 et A2 tels que Un+3 = A0*un + A1*un+1 + A2*un+2
+            L2 contient u0 = 3, u1= 2, u2 = 5 (premiers termes de la suite recurrente linéaire d'ordre p=3)
+    
+             """
     troncation_a_la_plus_courte(L1,L2)
-    for i in range(0,len(L1)):
-         L.append(L1[i]*L2[i])
-    return L
-#on teste la fonction avec une suite géometrique: 
-L1 = [2 for i in range(10)]
-L2 = [x for x in range(0,10)]
-print(L1,L2)
-suite_liste(L1,L2,9)
+    un = 0
+    p = len(L2) #on stocke l'ordre de la suite 
+    
+    if n <= len(L2):
+        return L2[0:n]
+    else:
+        for i in range(len(L2),n):
+            un = sum([L1[x]*L2[-p+x] for x in range(p)])
+            # print(un)
+            #on calcule la suite a partir des p derniers termes de la liste. 
+            L2.append(un)
+            # print(L2)
+        return L2
+            
+
+
+#on essaie la suite de fibonacci
+fib1 = [1,1]
+fib2 = [0,1]    
+suite_liste(fib1,fib2,10)
+#[0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
+
+#ii
+
+
+#iii
+"""En construisant la suite à partir de deux listes de longueur 1 : on obtient
+une suite récurrente linéaire d'ordre 1, c'est à dire une suite géométrique
+Application : suite géométrique de premier terme 1, et de raison 2"""
+L1, L2 = [2], [1]
+suite_liste(L1,L2,10)
+#[1, 2, 4, 8, 16, 32, 64, 128, 256, 512]
+
+
+
+
 
 # %%
