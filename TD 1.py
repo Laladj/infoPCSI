@@ -61,7 +61,7 @@ presence("z","banane")
 # Sans utiliser "in"
 def presence(a: str, ch:str):
     L = list(ch)
-    for i in range(1,len(n)+1):
+    for i in range(1,len(L)+1):
         if a == L[i]:
             return True
         else: 
@@ -226,7 +226,7 @@ bissextile2(400)
 
 #%%===========Exercice 9===============
 import numpy as np
-def monte_et_descend(T):
+#def monte_et_descend(T):
 
 
 
