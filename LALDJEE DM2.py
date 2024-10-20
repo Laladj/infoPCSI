@@ -142,14 +142,26 @@ def suite_terme(L1,L2,n)->float:
      """renvoie le terme un-1 de la suite linéaire
      recurrente donnée par L1 et L2.
      Cf suite_liste()"""
+     
      troncation_a_la_plus_courte(L1,L2)
      un = 0
-     p = len(L2) #on stocke l'ordre de la suite 
-    
-     if n <= len(L2):
-        return L2[0:n]
+     p = len(L2) #ordre de la liste, nombre de termes à "conserver"
+     #on cherche a disposer d'une liste de seulement p termes,
+     # afin de pouvoir employer notre hypothèse de recurrence. 
+     if n<= len(L2):
+        return L2[1:n]
      else:
         for i in range(len(L2),n):
             un = sum([L1[x]*L2[-p+x] for x in range(p)])
+            L2.append(un)
+            L2.pop(0)
+        return L2[-1]
+
+
+#v
+suite_terme(coefs,donnees,110) #fonctionne pas
+
+L1, L2 = [2], [1]
+suite_terme(L1,L2,110) #fonctionne
 
 
