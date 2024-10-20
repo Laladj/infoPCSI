@@ -65,7 +65,6 @@ print(L) #[0, 1, 2, 3, 1]
 
 #iv
 print(poly_Euclide(coefficients)) #on obtient bien 1
-#%%
 #v
 def troncation_a_la_plus_courte(L1,L2)->tuple:
      """renvoie la troncation des deux listes passees 
@@ -78,6 +77,8 @@ def troncation_a_la_plus_courte(L1,L2)->tuple:
 L1 = [x for x in range(1,10)]
 L2 = [x for x in range(10,20)]
 troncation_a_la_plus_courte(L1,L2) #([1, 2, 3, 4, 5, 6, 7, 8, 9], [10, 11, 12, 13, 14, 15, 16, 17, 18])
+
+(coefs, donnees)= troncation_a_la_plus_courte(coefficients,donnees_initiales)
 
 #============Question 3==========
 
@@ -119,7 +120,14 @@ suite_liste(fib1,fib2,10)
 #[0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
 
 #ii
+suite_liste(coefs,donnees,40)
+#le résultat est très grand
 
+#on essaie la suite de fibonacci
+fib1 = [1,1]
+fib2 = [0,1]    
+suite_liste(fib1,fib2,10)
+#[0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
 
 #iii
 """En construisant la suite à partir de deux listes de longueur 1 : on obtient
@@ -129,8 +137,19 @@ L1, L2 = [2], [1]
 suite_liste(L1,L2,10)
 #[1, 2, 4, 8, 16, 32, 64, 128, 256, 512]
 
+#iv
+def suite_terme(L1,L2,n)->float:
+     """renvoie le terme un-1 de la suite linéaire
+     recurrente donnée par L1 et L2.
+     Cf suite_liste()"""
+     troncation_a_la_plus_courte(L1,L2)
+     un = 0
+     p = len(L2) #on stocke l'ordre de la suite 
+    
+     if n <= len(L2):
+        return L2[0:n]
+     else:
+        for i in range(len(L2),n):
+            un = sum([L1[x]*L2[-p+x] for x in range(p)])
 
 
-
-
-# %%
