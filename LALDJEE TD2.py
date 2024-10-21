@@ -175,7 +175,7 @@ plt.grid()
 plt.show()
 
 
-    #%%============EXERCICE 3=============
+#%%============EXERCICE 3=============
 #i
 import random as rd
 def plus_proches(L:list, dist) -> tuple:
@@ -346,7 +346,7 @@ print(isSymetrical([2,5,7,8,4,5,2])) #False, nombre impair d'éléments
 #La fonction est de complexité linéaire dans le pire des cas, 
 #dans la mesure ou la sortie de la boucle est immédiate à la découverte du 
 #terme non symétrique
-#%% Exercice 6
+#%% ==========Exercice 6============
 #Je copie des fonction précédentes, car il n'est pas possible d'appeler ces 
 #fonctions dans la cellule
 #1===========================
@@ -358,10 +358,10 @@ def listeidentique(L:list) -> bool:
         else: pass
     return True
 
-def max_et_min1(L:list):
+def max_et_min1(L:list)->tuple:
     """Renvoie Le max et min d'une liste sous forme de tuple"""
-    if listeidentique(L):
-        return L[0], L[1]
+    if listeidentique(L) or len(L)==1:
+        return (L[0], L[1])
     else: 
         plusGrand = float('-inf')
         plusPetit = float('inf')
@@ -371,29 +371,72 @@ def max_et_min1(L:list):
                 plusGrand= nombre
             if nombre <= plusPetit:
                 plusPetit = nombre
-    return plusPetit, plusGrand
+    return (plusPetit, plusGrand)
     
 max_et_min1([3,7,2,5,8,2,7, -12, 18])
-#def max_et_min1(L:list)->tuple:
+#(-12,18)
 
 #===============2
 
-def max_et_min2(L:list)->tuple:
-    """Compare les elements de la liste deux a deux,
-    et renvoie le couple min/max de la liste"""
-    
-    listeMin , listeMax =  [], []
-    # while len(listeMin)>1 or len(listeMin) == 0 and len(listeMax)>1 or len(listeMax) == 0 : 
-    for i in range(0, len(L)-1, 2):
-        if L[i]> L[i+1]:
-            listeMax.append(L[i])
-            listeMin.append(L[i+1])
-        else :
-            listeMin.append(L[i])
-            listeMax.append(L[i+1])
-    min, max = float(listeMin), float(listeMax)
-    return min, max
-max_et_min2([3,7,2,5,8,2,7, -12 ])
 
 
-#%%
+
+def max_et_min2(L: list) -> tuple:
+    """ Prend en argument une liste et renvoie un tuple
+    composé d'abord de son min, puis de son max
+
+    Compare les éléments de la liste deux à deux
+    """
+    if len(L) == 1 or listeidentique(L):
+        return (L[0],L[0])
+
+    if L[0] < L[1]:
+        minListe, maxListe = L[0], L[1]
+    else:
+        minListe, maxListe = L[1], L[0]
+
+    for i in range(2, len(L) - 1, 2):
+        if L[i] < L[i + 1]:
+            minListe = min(minListe, L[i])
+            maxListe = max(maxListe, L[i + 1])
+        else:
+            minListe = min(minListe, L[i + 1])
+            maxListe = max(maxListe, L[i])
+
+    # Si la liste a un nombre impair d'éléments, comparer le dernier élément restant
+    if len(L) % 2 == 1:
+        minListe = min(minListe, L[-1])
+        maxListe = max(maxListe, L[-1])
+
+    return (minListe, maxListe)
+
+# Exemple de test
+test_liste = [x for x in range(-10, 10)]
+resultat = max_et_min2(test_liste)
+resultat
+#(-10, 9)
+#max_et_min2([1])
+#(1,1)
+
+#iii
+
+
+def max_et_min1_comparaisons(n:int)->int:
+    """renvoie le nombre de comparaisons effectuées par la fonction 
+    max_et_min1() pour une liste de 2**n elements
+    """
+    L = [rd.randrange(-100,100) for x in range(2**n)]
+    count = 0
+    if listeidentique(L) or len(L)==1:
+        count = 1
+        return count
+    else: 
+        count = len(L)*2
+        return(count)
+# max_et_min() compare chaque élément avec le plus petit et le plus grand
+#element. Il effectue donc 2^n+1 comparaisons
+max_et_min1_comparaisons(3)
+
+def max_et_min2_comparaisons(n:int)->int:
+    """Renvoie le nombre de comparaisons faites par max_et_min1() pour
+    """
