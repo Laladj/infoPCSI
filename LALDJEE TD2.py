@@ -175,57 +175,104 @@ plt.grid()
 plt.show()
 
 
-    #%%============EXERCICE 2=============
+    #%%============EXERCICE 3=============
 #i
 import random as rd
 def plus_proches(L:list, dist) -> tuple:
-    """Prend en argument une liste et un fonction,
-    et renvoie le couple d'elements DISTINCTS 
-    dont la valeur prise par la fonction est 
-    la plus faible."""
-    couple = (float('-inf'),float('inf')) 
-    for index, a in enumerate(L):
+     """Prend en argument une liste et une fonction,
+     et renvoie le couple d'elements 
+     dont la valeur prise par la fonction est 
+     la plus faible."""
+     couple = (L[0],L[1]) 
+     for index, a in enumerate(L):
         for b in L[index+1:]:
-            if dist(a,b) < dist(couple[0], couple[1]):
+            if dist(a,b) <= dist(couple[0], couple[1]):
                 couple = (a,b)
             else : pass
-    return couple
+     return couple
 
 def dist1(x,y) -> float:
-    """Renvoie la distance entre x et y, deux reels"""
-    return abs(x-y)
+     """Renvoie la distance entre x et y, deux reels"""
+     return abs(x-y)
 
 #TEST
 L = [k-0.11*k**2 for k in range(31)]
+#L décrit le tableau de valeurs de f(x)= (k-0.11)*x^2
 print(L)
 print(plus_proches(L,dist1)) #(2.24, 2.25)
+#le résultat est cohérent, dans la mesure ou la dérivée s'annule en 4.5
+
+
+#TEST 2 
+L2 = [x**2 for x in range(-10,10)]
+#D'après la parité de la fonction carrée, il existe 10 couples
+#pour lesquels la distance est de 0
+print(L2)
+print(plus_proches(L2,dist1))
+#on obtient le couple (1,1), car il est centré par rapport à l'intervalle étudié
+
+#iii
 
 def taux_diff(ch1,ch2)-> float:
-    card, a = 0, 0
-    """prend en argument deux chaines de caractères, et renvoie 
-    le taux de caractères différents entre les deux listes"""
-    if len(ch1)< len(ch2):
+     
+     """prend en argument deux chaines de caractères, et renvoie 
+     le taux de caractères différents entre les deux listes"""
+     card, a = 0, 0
+     if len(ch1)< len(ch2):
         l, L = ch1, ch2
-    else: l, L = ch2, ch1
-    while a <= len(l):
-        a += 1
+     else: l, L = ch2, ch1
+     while a < len(l):
         if l[a] == L[a]:
             pass
-        else : card += 1
-    return (card + (len(L)-len(l)))/len(l)
+        else :
+            card += 1
+        a += 1
 
+     return (card + (len(L)-len(l)))/len(l)
+
+#iv 
 Ch = ["myrte", "myrrhe", "myriapode", "tétrapode", "tropaire", "entrisme", "tropisme"]
-
+plus_proches(Ch,taux_diff)
+#tropaire, tropisme. (cohérent)
+#v
 ADN = [[rd.choice(['A', 'T', 'C', 'G']) for _ in range(20)] for _ in range(1000)]
 #6
 plus_proches(ADN, taux_diff)
+#on obtient un tuple de deux listes:
+#(['G', 'T', 'T', 'T', 'G', 'G', 'C', 'C', 'A', 'G', 'C', 'T', 'T', 'C', 'T', 'C', 'T', 'A', 'C', 'G'], 
+# ['G', 'A', 'T', 'T', 'G', 'A', 'C', 'C', 'A', 'G', 'C', 'T', 'T', 'A', 'T', 'C', 'T', 'G', 'A', 'G'])
+#On remarque qu'elles sont semblables 
+
 
 #7
 
-def plus_proches_dist(L):
-    """Renvoie la distance la plus courte entre deux elements,
-     ainsi le couple des deux elements """
-    return 
+def plus_proches_dist(L,dist):
+   """Renvoie la distance la plus courte entre deux elements,
+   ainsi le couple des deux elements """
+   return plus_proches(L, dist), dist(plus_proches)
+
+#%%8 On vise une complexité meilleure que quadratique: 
+# C'est à dire, dans le pire des cas, linéarithimique , ie O(n*log(n))
+def plus_proches_flottants(L:list)->tuple:
+    """Prend en argument une liste de flottants, et renvoie
+    le couple ayant la plus petite distance A,B"""
+    L.sort()
+    distance = float('+inf')
+    couple = ()
+    for i in range(0,len(L)-1):
+        #la boucle est de complexité O(n), négligeable devant O(nlog(n))
+        if abs(L[i]-L[i+1])<distance:
+            couple = (L[i],L[i+1])
+        else: pass
+    return couple
+
+L = [rd.randrange(-40,100) for x in range(100)]
+plus_proches_flottants(L)
+
+
+
+
+   
     
 #%%===========EXERCICE 4===============
 #i
@@ -242,12 +289,13 @@ def enleve(L:list, element):
             liste.append(L[count])
             count += 1
         for i in range(count+1, len(L)):
-            liste.append(i)
+            liste.append(L[i])
         L[:]=liste
 
 L = [3,5, 6, 2, 8, 9, 4] 
 enleve(L,5) # la liste contient l'element
-print(L)
+#print(L)
+#[3, 6, 2, 8, 9, 4]
 
 enleve(L, "element non contenu")
 print(L)
@@ -263,6 +311,7 @@ def dernier(L:list)->list:
 L = [3,5, 6, 2, 8, 9, 4] 
 dernier(L)
 print(L)
+#[3, 5, 6, 2, 8, 9]
 
 #iii
 def miroir(L:list) -> list:
@@ -271,11 +320,14 @@ def miroir(L:list) -> list:
     for i in range(1, len(L)+1):
         liste.append(L[-i])
     L[:]= liste
-L = [3,5, 6, 2, 8, 9, 4] 
-miroir(L)
-print(L)
-
-
+L_impaire= [3,5, 6, 2, 8, 9, 4] #nombre de termes impairs
+miroir(L_impaire)
+print(L_impaire)
+#[4, 9, 8, 2, 6, 5, 3]
+L_pair = [3,5, 6, 2, 8, 9, 4,2]
+miroir(L_pair)
+print(L_pair)
+#[2, 4, 9, 8, 2, 6, 5, 3]
 
 
 #%%===========EXERCICE 5============
@@ -287,11 +339,13 @@ def isSymetrical(L:list) -> bool:
             pass
         else: return False
     return True
-print(isSymetrical([2,5,7,7,5,2])) #Nombre pair d'éléments
-print(isSymetrical([2,5,7,8,7,5,2]))#Nombre impair d'éléments
+print(isSymetrical([2,5,7,7,5,2])) #Nombre pair d'éléments True
+print(isSymetrical([2,5,7,8,7,5,2]))#Nombre impair d'éléments True
 print(isSymetrical([2,5,7,8,4,5,2])) #False, nombre impair d'éléments
 
-
+#La fonction est de complexité linéaire dans le pire des cas, 
+#dans la mesure ou la sortie de la boucle est immédiate à la découverte du 
+#terme non symétrique
 #%% Exercice 6
 #Je copie des fonction précédentes, car il n'est pas possible d'appeler ces 
 #fonctions dans la cellule
