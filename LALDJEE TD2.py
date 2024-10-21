@@ -6,23 +6,33 @@
 
 def positivons(L:list):
     """Prend une liste de réels positifs, et renvoie la valeur absolue des elements de la liste"""
-    L = [abs(x) for x in L]
+    L[:] = [abs(x) for x in L]
     
-L = [x for x in range(-5,10)]
-positivons(L)
-print(L)
-#Revoir la phase de Test
-
-#%%
+Ltest = [x for x in range(-5,10)]
+positivons(Ltest)
+#[5, 4, 3, 2, 1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 L = [x-0.1 for x in range(-21,22)]
 positivons(L)
-print(L)
+#[21.1, 20.1, 19.1, 18.1,..., 19.9, 20.9]
+
 #%%============EXERCICE 2=============
 import random as rd
 import time
 import statistics as st
 from matplotlib import pyplot as plt
+import numpy as np
+
+"""On cherche ici à étudier la complexité algorithmique de deux méthodes
+visant à déterminer le second élément d'une liste.
+second_max1() parcours deux fois la liste, 
+tandis que second_max2() ne la parcours qu'une seule fois.
+
+On obtient finalement dans les deux cas une complexité linéaire O(n),
+avec néamoins une exécution plus rapide pour second_max(2). 
+
+Plus de renseignements : 
+https://fr.wikipedia.org/wiki/Analyse_de_la_complexit%C3%A9_des_algorithmes"""
 
 #1. Reprise du script exo 12 TD1
 def listeidentique(L:list) -> bool:
@@ -34,28 +44,41 @@ def listeidentique(L:list) -> bool:
     return True
 listeidentique([1,1,1,1]) #True
 listeidentique([1,1,1,7]) #False
+
 def maximumListe(L:list):
     """Renvoie le maximum d'une liste, déjà écrit précemment, mais nécéssaire
       pour le dernier script"""
-    plusGrand = 0
+    plusGrand = float('-inf')
     for i, nombre in enumerate(L):
         if nombre >= plusGrand:
             plusGrand= nombre
     return plusGrand
 
-def second_max1(L:list) -> float:
+#methode en utilisant filter
+def second_max1Lambda(L:list) -> float:
     """Renvoie le second plus grand nombre de la liste."""
     if listeidentique(L):
         return None
     else: L2 = list(filter(lambda a: a != maximumListe(L), L))
     return maximumListe(L2)
 
-second_max1([3, 3, 8, 12, 7, 4, 12, 9, 2])
+second_max1Lambda([3, 3, 8, 12, 7, 4, 12, 9, 2])
+
+#parcours de liste classique
+def second_max1(L:list) -> float:
+    """Renvoie le second plus grand nombre de la liste."""
+    if listeidentique(L):
+        return None
+    else:
+        L.remove(maximumListe(L))
+        return maximumListe(L)
+    
+second_max1([x for x in range(0,10)]) #8
 
 #ii
 def second_max2(L:list) -> float:
-    """renvoie le second élément de la liste, 
-    en effectuant qu'un seul parcourt de la liste"""
+    """renvoie le second plus grand élément de la liste, 
+    en effectuant qu'un seul parcours de la liste"""
     if listeidentique(L):
         return None
     else : 
@@ -68,10 +91,10 @@ def second_max2(L:list) -> float:
                 max2 = nombre
     return max2 if max2 != float('-inf') else None
 second_max2([3, 3, 8, 12, 7, 4, 12, 9, 2]) #renvoie bien 9
-print(second_max2([1,1,1,1]))
+print(second_max2([1,1,1,1])) #None
 
 #iii
-
+#
 def tab_aleatoire(n=10000, N=1024) ->list:
     """Renvoie un tableau de n nombres compris entre 0 et N-1"""
     L = [] 
@@ -123,7 +146,7 @@ temps_moy(1000)
 #(0.10627025454546542, 0.0013746272728150705)
 
 #IV
-n_values = [10**i for i in range(1, 8)]  # n = 10^1, 10^2, ..., 10^7
+valeursEssayees = [10**i for i in range(1,8)]  # n = 10^1, 10^2, ..., 10^7
 temps_second_max1 = []
 temps_second_max2 = []
 
@@ -131,33 +154,29 @@ temps_second_max2 = []
 #puis une autre contenant les ordonées
 # Mesurer les temps moyens
 
-for n in n_values:
+for n in valeursEssayees:
     moy1, moy2 = temps_moy(n)
     temps_second_max1.append(moy1)
     temps_second_max2.append(moy2)
 
-# Tracé des résultats
 plt.figure(figsize=(10, 6))
-plt.plot(n_values, temps_second_max1, label='second_max1', marker='o')
-plt.plot(n_values, temps_second_max2, label='second_max2', marker='o')
+plt.plot(valeursEssayees, temps_second_max1, label='second_max1()', marker='o')
+plt.plot(valeursEssayees, temps_second_max2, label='second_max2()', marker='o')
 
-# Configurer l'échelle logarithmique
+#échelle logarithmique
 plt.xscale('log')
 plt.yscale('log')
 
-# Ajout de labels et d'un titre
 plt.xlabel('Nombre d\'éléments (n)')
 plt.ylabel('Temps moyen d\'exécution (s)')
-plt.title('Temps moyen d\'exécution pour second_max1 et second_max2')
+plt.title('Temps moyen d\'exécution pour second_max1() et second_max2()')
 plt.legend()
 plt.grid()
 plt.show()
 
-    
 
-
-
-    # %%
+    #%%============EXERCICE 2=============
+#i
 import random as rd
 def plus_proches(L:list, dist) -> tuple:
     """Prend en argument une liste et un fonction,
@@ -171,6 +190,7 @@ def plus_proches(L:list, dist) -> tuple:
                 couple = (a,b)
             else : pass
     return couple
+
 def dist1(x,y) -> float:
     """Renvoie la distance entre x et y, deux reels"""
     return abs(x-y)
