@@ -146,7 +146,7 @@ temps_moy(1000)
 #(0.10627025454546542, 0.0013746272728150705)
 
 #IV
-valeursEssayees = [10**i for i in range(1,8)]  # n = 10^1, 10^2, ..., 10^7
+valeursEssayees = [10**i for i in range(1,6)]  # n = 10^1, 10^2, ..., 10^7
 temps_second_max1 = []
 temps_second_max2 = []
 
@@ -158,6 +158,8 @@ for n in valeursEssayees:
     moy1, moy2 = temps_moy(n)
     temps_second_max1.append(moy1)
     temps_second_max2.append(moy2)
+
+#Mise en forme Pyplot à l'aide de ChatGPT
 
 plt.figure(figsize=(10, 6))
 plt.plot(valeursEssayees, temps_second_max1, label='second_max1()', marker='o')
@@ -361,7 +363,7 @@ def listeidentique(L:list) -> bool:
 def max_et_min1(L:list)->tuple:
     """Renvoie Le max et min d'une liste sous forme de tuple"""
     if listeidentique(L) or len(L)==1:
-        return (L[0], L[1])
+        return (L[0], L[0])
     else: 
         plusGrand = float('-inf')
         plusPetit = float('inf')
@@ -377,9 +379,6 @@ max_et_min1([3,7,2,5,8,2,7, -12, 18])
 #(-12,18)
 
 #===============2
-
-
-
 
 def max_et_min2(L: list) -> tuple:
     """ Prend en argument une liste et renvoie un tuple
@@ -438,5 +437,71 @@ def max_et_min1_comparaisons(n:int)->int:
 max_et_min1_comparaisons(3)
 
 def max_et_min2_comparaisons(n:int)->int:
-    """Renvoie le nombre de comparaisons faites par max_et_min1() pour
+    """Renvoie le nombre de comparaisons faites par max_et_min2() pour
+    une liste de 2^n éléments
     """
+    L = [rd.randrange(-100,100) for x in range(2**n)]
+    count = 0
+    if len(L) == 1 or listeidentique(L):
+        count += 1
+
+    if L[0] < L[1]:
+        count +=1
+    else:
+        count +=1
+    for i in range(2, len(L) - 1, 2):
+        count +=1
+    return count, L
+max_et_min2_comparaisons(8)
+# on effectue 2^n-1 comparaisons
+
+#IV
+#comparons les deux modèles
+#la mise en page du graphique est rédigée par ChatGPT
+def tab_aleatoire(taille: int) -> list:
+    """Génère une liste aléatoire de la taille donnée."""
+    return [rd.randint(-1000, 1000) for _ in range(taille)]
+
+def benchmark(fonction1, fonction2, tailles: list) -> tuple:
+    """Effectue un benchmark des deux fonctions pour différentes tailles de listes."""
+    temps1 = []
+    temps2 = []
+    
+    for taille in tailles:
+        liste_test = tab_aleatoire(taille)
+        
+        # Benchmark max_et_min1
+        debut1 = time.perf_counter()
+        fonction1(liste_test)
+        fin1 = time.perf_counter()
+        temps1.append(fin1 - debut1)
+        
+        # Benchmark max_et_min2
+        debut2 = time.perf_counter()
+        fonction2(liste_test)
+        fin2 = time.perf_counter()
+        temps2.append(fin2 - debut2)
+    
+    return temps1, temps2
+
+# Exécution du benchmark avec des tailles de liste de test
+tailles_liste = [10**x for x in range(0, 7)]
+temps1, temps2 = benchmark(max_et_min1, max_et_min2, tailles_liste)
+
+# Création du graphique
+plt.figure(figsize=(10, 6))
+plt.plot(tailles_liste, temps1, label='max_et_min1()', marker='o')
+plt.plot(tailles_liste, temps2, label='max_et_min2()', marker='o')
+
+# Utilisation de l'échelle logarithmique
+plt.xscale('log')
+plt.yscale('log')
+
+plt.xlabel('Taille de la liste')
+plt.ylabel('Temps d\'exécution (secondes)')
+plt.title('Comparaison des temps d\'exécution de max_et_min1() et max_et_min2()')
+plt.legend()
+plt.grid(True)
+
+# Affichage du graphique
+plt.show()
