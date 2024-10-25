@@ -148,13 +148,13 @@ def suite_terme(L1,L2,n)->float:
      recurrente donnée par L1 et L2.
      Cf suite_liste()"""
      
-     troncation_a_la_plus_courte(L1,L2)
+     (L1,L2)=troncation_a_la_plus_courte(L1,L2)
      un = 0
      p = len(L2) #ordre de la liste, nombre de termes à "conserver"
      #on cherche a disposer d'une liste de seulement p termes,
      # afin de pouvoir employer notre hypothèse de recurrence. 
      if n<= len(L2):
-        return L2[1:n]
+        return L2[:n]
      else:
         for i in range(len(L2),n):
             un = sum([L1[x]*L2[-p+x] for x in range(p)])
@@ -165,8 +165,26 @@ def suite_terme(L1,L2,n)->float:
 
 #v
 suite_terme(coefs,donnees,110) #fonctionne pas
-
+suite_terme(coefficients,donnees_initiales,40)
 L1, L2 = [2], [1]
-suite_terme(L1,L2,110) #fonctionne
+suite_terme(L1,L2,10) #fonctionne
+
+# Question 4 : équirépartition modulaire. 
+def suite_restes(L1:list,L2:list,N:int=1000,m:int=7)->tuple:
+     """Prend 4 arguments: 
+        L1 : Liste ,les coefficients de la suite récurrente linéaire
+        L2 :, Liste les  premiers termes de la suite
+        N  : Entier naturel, dernier terme de la suite Rk étudié
+        m  : Entier naturel supérieur ou égal à 2
+        
+        considérons une suite récurrente linéaire finie de N termes
+        (allant de 0 à N-1)
+        Renvoie un tuple décrivant la proportion des termes de la suite 
+        dont le reste de la division euclidienne vaut le terme de la suite 
+        NB : on débutera la liste par 0,0 pour eviter les erreurs"""
+     L_count = []
+     for i in range(0,n):
+          L_count.append(suite_terme(L1,L2,N)%m)
+        
 
 
