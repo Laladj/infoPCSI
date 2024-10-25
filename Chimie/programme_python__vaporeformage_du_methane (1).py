@@ -60,13 +60,13 @@ val_depart =[0.9,0.001]
 
 for P in press:
     [ksi1,ksi2] = op.root(f,val_depart).x # resolution numerique 
-    
+    #======Completés avec les valeurs de "l'etat final"
     # calcul et stockage des quantites de matiere
-    nH2.append(     )
-    nCH4.append(     )
-    nCO.append(     )
-    nCO2.append(     )
-    nH2O.append(     )
+    nH2.append(3*ksi1+ksi2)
+    nCH4.append(1*ksi1)
+    nCO.append(ksi1-ksi2)
+    nCO2.append(ksi2)
+    nH2O.append(nH2Oi-ksi1-ksi2)
     
     val_depart = [ksi1,ksi2] # le calcul numerique suivant partira des avancement calcules au point precedent
     
