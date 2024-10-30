@@ -31,16 +31,13 @@ print(donnees_initiales)
 
 #================Question 2
 def pgcd(a, b) -> int:
-    """Renvoie le pgcd des deux entiers"""
+    """Renvoie le pgcd des deux entiers (méthode d'Euclide)"""
+    a, b = abs(a), abs(b)
     if a == 0 or b == 0:
-        return 0
-    else:
-        while a != b:
-            if a < b:
-                a, b = b, a
-            a, b = b, a - b
+        return max(a, b)
+    while b:
+        a, b = b, a % b
     return a
-
 # pgcd(72,32)
 # pgcd(0,0)
 pgcd(0,3)
@@ -154,7 +151,7 @@ def suite_terme(L1,L2,n)->float:
      #on cherche a disposer d'une liste de seulement p termes,
      # afin de pouvoir employer notre hypothèse de recurrence. 
      if n<= len(L2):
-        return L2[:n]
+        return L2[n-1]
      else:
         for i in range(len(L2),n):
             un = sum([L1[x]*L2[-p+x] for x in range(p)])
@@ -181,10 +178,42 @@ def suite_restes(L1:list,L2:list,N:int=1000,m:int=7)->tuple:
         (allant de 0 à N-1)
         Renvoie un tuple décrivant la proportion des termes de la suite 
         dont le reste de la division euclidienne vaut le terme de la suite 
-        NB : on débutera la liste par 0,0 pour eviter les erreurs"""
-     L_count = []
-     for i in range(0,n):
-          L_count.append(suite_terme(L1,L2,N)%m)
-        
+        """
+     L_modulo = [suite_terme(L1,L2,x)%m for x in range(0,N)] 
+     L_count = [L_modulo.count(x)/len(L_modulo) for x in range(0,m)]
+
+     return tuple(L_count)
+
+suite_restes(coefficients,donnees)
+#(0.135, 0.135, 0.128, 0.159, 0.139, 0.163, 0.141)
+# on obtient bien un 7-uplet dont la somme vaut 1. 
+
+#2 
+#i
+def dist(L1:list,L2:list,N:int=1000,m:int=7)->float:
+     """Prend en argument deux listes et deux entiers, 
+     et determine la distance statistique"""
+     
+
+     return max([abs (x - (1/m) ) for x in suite_restes(L1,L2,N,m)])
+
+dist(coefficients,donnees)
+# on obtient 0.02014
+# cela correspond bien à la distance entre le plus grand nombre
+# de suite_restes(coefficients,donnees) - 1/7
+#ii
+"""  pour N=2000, on obtient 0.0148
+ pour N=3000, on obtient 0.0145
+ on notera que dist() est de complexité O(n^2), les calculs
+deviennent donc rapidement longs """
+
+#######
+# Après recherche, je me suis aidé d'internet
+#
+
+coefficients_suite = [1, 1]
+termes_initiaux = [1, 0]
+dist(L1, L2, 4, 2)
+
 
 
