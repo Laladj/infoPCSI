@@ -209,11 +209,31 @@ deviennent donc rapidement longs """
 
 #######
 # Après recherche, je me suis aidé d'internet
-#
+# On établit une suite de fibonacci modulo 1 
 
 coefficients_suite = [1, 1]
 termes_initiaux = [1, 0]
 dist(L1, L2, 4, 2)
+# on obtient bien 0, on notera que cela ne fonctionne qu'avec 2 et 4
 
+#######a traiter : essayer de trouver le cas général pour tout M qui divise N 
 
+#IV
+def dist_moy(L1:list,N:int,m)->float:
+     """prend en argument une liste L1, et construit les n-1 premiers
+     termes d'une suite recurrente prenant pour coefficients L1, 
+     et des premiers termes générés aléatoirement"""
+     L2 = [rd.randrange(0,301) for _ in range(N)]
+     return dist(L1,L2,N,m)
 
+dist_moy(coefficients,1000,7)
+#après plusieurs exécutions, on obtient des valeurs entre
+# 0,02 et 0,06 
+# d'après le TCL, un grand nombre d'execution succesives
+#convergerait vers une distribution normale, comme la v.a reste inchangée
+
+#3 faire la phase de tests
+
+#======Question 5===== Problème de Skolem
+
+#1 
