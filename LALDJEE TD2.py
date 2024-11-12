@@ -45,7 +45,9 @@ https://fr.wikipedia.org/wiki/Analyse_de_la_complexit%C3%A9_des_algorithmes"""
 
 #1. Reprise du script exo 12 TD1
 def listeidentique(L:list) -> bool:
-    """renvoie True si la liste est identique"""
+    """ list -> bool
+    renvoie True si la liste est identique, False sinon
+    """
     for i in range(len(L)):
         if L[i] != L[0]:
             return False
@@ -54,18 +56,20 @@ def listeidentique(L:list) -> bool:
 listeidentique([1,1,1,1]) #True
 listeidentique([1,1,1,7]) #False
 
-def maximumListe(L:list):
-    """Renvoie le maximum d'une liste, déjà écrit précemment, mais nécéssaire
-      pour le dernier script"""
+def maximumListe(L:list)->float:
+    """ list -> float
+    Renvoie le maximum d'une liste non vide de reels"""
     plusGrand = float('-inf')
     for i, nombre in enumerate(L):
         if nombre >= plusGrand:
             plusGrand= nombre
     return plusGrand
 
-#methode en utilisant filter
+#methode en utilisant lambda
 def second_max1Lambda(L:list) -> float:
-    """Renvoie le second plus grand nombre de la liste."""
+    """list -> float
+    Renvoie le second plus grand nombre d'une liste de reels.
+    utilise la fonction lambda"""
     if listeidentique(L):
         return None
     else: L2 = list(filter(lambda a: a != maximumListe(L), L))
@@ -75,7 +79,8 @@ second_max1Lambda([3, 3, 8, 12, 7, 4, 12, 9, 2])
 
 #parcours de liste classique
 def second_max1(L:list) -> float:
-    """Renvoie le second plus grand nombre de la liste."""
+    """list -> float
+    Renvoie le second plus grand nombre d'une liste de reels."""
     if listeidentique(L):
         return None
     else:
@@ -86,7 +91,8 @@ second_max1([x for x in range(0,10)]) #8
 
 #ii
 def second_max2(L:list) -> float:
-    """renvoie le second plus grand élément de la liste, 
+    """list -> float
+    Renvoie le second plus grand nombre d'une liste de reels.
     en effectuant qu'un seul parcours de la liste"""
     if listeidentique(L):
         return None
@@ -105,14 +111,16 @@ print(second_max2([1,1,1,1])) #None
 #iii
 #
 def tab_aleatoire(n=10000, N=1024) ->list:
-    """Renvoie un tableau de n nombres compris entre 0 et N-1"""
+    """ int, int =1024 -> list
+    Renvoie un tableau de n nombres compris entre 0 et N-1"""
     L = [] 
     for i in range(n):
         L.append(rd.randrange(0,N))
     return L
 
 def benchmark(L=[10, 100, 1000, 10000])->list:
-    """Renvoie le temps de calcul des deux fonctions
+    """ list -> list
+    Renvoie le temps de calcul des deux fonctions
     et le nombre d'element dans la liste"""
     temps = []
     for valeur in L:
@@ -129,16 +137,19 @@ def benchmark(L=[10, 100, 1000, 10000])->list:
         temps.append((valeur,tSecond_max1,tSecond_max2))
     return temps
 #benchmark()
-"""[(10, 5.360000022847089e-05, 2.480000011928496e-05),
+""" dans l'odre :(nombre d'iterations, temps pour Second_max1(), temps pour Second_max2())
+
+[(10, 5.360000022847089e-05, 2.480000011928496e-05),
  (100, 0.0009003000000120664, 0.00016320000031555537),
  (1000, 0.10783889999993335, 0.0012808000001314213),
  (10000, 8.986405500000274, 0.012891200000012759)]
  
- On observe que second_max2() est beaucoup plus performant"""
+ On observe que second_max2() est  plus performant"""
 
-def temps_moy(n):
+def temps_moy(n:int)->tuple:
     Temps1, Temps2 = [], []
-    """renvoie la moyenne des temps de calcul des deux fonctions
+    """ int->tuple
+    renvoie la moyenne des temps de calcul des deux fonctions
     pour n elements de la liste"""
     for _ in range(int(10**4/n)+1):
         t0 = time.perf_counter()
@@ -202,7 +213,7 @@ def plus_proches(L:list, dist) -> tuple:
             else : pass
      return couple
 
-def dist1(x,y) -> float:
+def dist1(x:float,y:float) -> float:
      """Renvoie la distance entre x et y, deux reels"""
      return abs(x-y)
 
@@ -224,7 +235,7 @@ print(plus_proches(L2,dist1))
 
 #iii
 
-def taux_diff(ch1,ch2)-> float:
+def taux_diff(ch1:str,ch2:str)-> float:
      
      """prend en argument deux chaines de caractères, et renvoie 
      le taux de caractères différents entre les deux listes"""
