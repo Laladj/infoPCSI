@@ -85,13 +85,13 @@ troncation_a_la_plus_courte(L1,L2) #([1, 2, 3, 4, 5, 6, 7, 8, 9], [10, 11, 12, 1
 #============Question 3==========
 
 #i
-def suite_liste(L1,L2,n)->list:
+def suite_liste(L1:list,L2:list,n:int)->list:
     """ Prend en argument deux listes de reels, et Renvoie 
 la liste constituée des n premiers termes de la suite récurrente
 linéaire d'ordre P= len(L1)
 C'est à dire les termes du 0ème au n-1ème
     
-    La première liste comporte les coefficient (a1, a2....an)
+    La première liste comporte les coefficients (a1, a2....an)
     la seconde liste comporte la liste de reels (u0...un-1)
 
     Exemple : L1 contient les coefficients : A0 A1 et A2 tels que Un+3 = A0*un + A1*un+1 + A2*un+2
@@ -107,7 +107,8 @@ C'est à dire les termes du 0ème au n-1ème
     else:
         for i in range(len(L2),n):
             un = sum([L1[x]*L2[-p+x] for x in range(p)])
-            # print(un)
+            #print(f"Iteration {i}, listeActuelle: {L2}, prochain Terme: {un}") #breakpoint
+    
             #on calcule la suite a partir des p derniers termes de la liste. 
             L2.append(un)
             # print(L2)
@@ -161,7 +162,7 @@ def suite_terme(L1,L2,n)->float:
 
 
 #v
-suite_terme(coefs,donnees,110) #fonctionne pas
+suite_terme(coefs,donnees,110) 
 suite_terme(coefficients,donnees_initiales,40)
 L1, L2 = [2], [1]
 suite_terme(L1,L2,10) #fonctionne
@@ -237,3 +238,36 @@ dist_moy(coefficients,1000,7)
 #======Question 5===== Problème de Skolem
 
 #1 
+#En théorie additive des nombres, le théorème de Skolem-Mahler-Lech déclare 
+#que si une suite de nombres est engendrée par une relation de récurrence linéaire, 
+#alors, avec des exceptions finies, 
+#les positions auxquelles la suite est nulle forment un motif qui se répète. (wikipédia)
+
+def zeros(L1:list,L2:list, N:int=1000)->list:
+     """arguments:
+        L1 :comporte les coefficients (a1, a2....an)
+        L2 :comporte la liste de reels (u0...un-1)
+        renvoie les indices des termes nuls de la suite reccurente linéaire
+        construite à partir de L1 et L2. """
+     troncation_a_la_plus_courte(L1,L2)
+     suite = suite_liste(L1, L2, N)
+     zerosListe = [x for x, nombre in enumerate(suite) if nombre == 0]
+     return zerosListe
+
+
+
+#print(zeros(coefficients,donnees))
+          
+
+# 2 
+# La suite reccurente linéaire : un+2 = un. Cette dernière alterne entre 0 et 1
+UN1= [1,0]
+UN2 = [0,1]
+print(zeros(UN1,UN2,1000))
+#renvoie bien toutes les positions paires
+#3 
+# la suite de fibonacci ne contient qu'un seul terme nul par stricte monotonie de cette dernière
+fibonacci1 = [1,1]
+fibonacci2 = [0,1]
+print(zeros(fibonacci1,fibonacci2))
+#ne revoie que l'indice 0. 
