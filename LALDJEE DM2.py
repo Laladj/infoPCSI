@@ -80,8 +80,6 @@ L1 = [x for x in range(1,10)]
 L2 = [x for x in range(10,20)]
 troncation_a_la_plus_courte(L1,L2) #([1, 2, 3, 4, 5, 6, 7, 8, 9], [10, 11, 12, 13, 14, 15, 16, 17, 18])
 
-(coefs, donnees)= troncation_a_la_plus_courte(coefficients,donnees_initiales)
-
 #============Question 3==========
 
 #i
@@ -255,8 +253,8 @@ def zeros(L1:list,L2:list, N:int=1000)->list:
      return zerosListe
 
 
-
-#print(zeros(coefficients,donnees))
+(coefs, donnees)= troncation_a_la_plus_courte(coefficients,donnees_initiales)
+print(zeros(coefficients,donnees))
           
 
 # 2 
