@@ -10,6 +10,7 @@
 from matplotlib import pyplot as plt
 import random as rd
 import math
+import time
 ###EXERCICE 1 : recherche dichotomique dans un tableau trié
 
 
